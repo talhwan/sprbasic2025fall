@@ -18,6 +18,7 @@ public class DefaultRestController {
         return map;
     }
 
+    //과제!
     @RequestMapping("/api/multiple")
     public Map<String, Object> multiple(int a, int b) {
         return null;
