@@ -1,9 +1,10 @@
-package com.thc.sprbasic2025fall.controller;
+package com.thc.sprbasic2025fall.controller.page;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequestMapping("")
 @Controller// 컨트롤러임을 알리기 위해 붙이는 어노테이션!
 public class DefaultPageController {
 

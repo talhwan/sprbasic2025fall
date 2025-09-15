@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+Board detail
+
+<div>
+    id : <input type="text" id="input_id"/> <br/>
+    title : <input type="text" id="input_title"/> <br/>
+    content : <input type="text" id="input_content"/> <br/>
+</div>
+
+<button onclick="detail_board()">조회하기</button>
+<button onclick="update_board()">수정하기</button>
+
+<script>
+    function update_board(){
+        $.ajax({
+            url: '/api/board/update',
+            method: 'GET',
+            data : {
+                id : $("#input_id").val()
+                , title : $("#input_title").val()
+                , content : $("#input_content").val()
+            },
+            dataType : "json",
+            contentType:"application/json",
+            success: function (data, status, xhr) {
+                alert("data :" + JSON.stringify(data));
+            },
+            error: function (data, status, err) {
+                alert("error :" + JSON.stringify(data));
+            },
+            complete: function () {
+            }
+        });
+    }
+    function detail_board(){
+        $.ajax({
+            url: '/api/board/detail/' + $("#input_id").val(),
+            method: 'GET',
+            data : {},
+            dataType : "json",
+            contentType:"application/json",
+            success: function (data, status, xhr) {
+                alert("data :" + JSON.stringify(data));
+                let board = data["detail"];
+                $("#input_title").val(board["title"]);
+                $("#input_content").val(board["content"]);
+
+            },
+            error: function (data, status, err) {
+                alert("error :" + JSON.stringify(data));
+            },
+            complete: function () {
+            }
+        });
+    }
+</script>
+</body>
+</html>
