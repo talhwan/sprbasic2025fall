@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Writing Create</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+
+Create!!
+<div>
+    title : <input type="text" id="input_title" /> <br/>
+    content : <input type="text" id="input_content" /> <br/>
+</div>
+
+<button onclick="create_writing()">등록하기</button>
+<script>
+    function create_writing(){
+        //alert("등록이 시작됩니다!");
+
+        $.ajax({
+            url: '/api/writing/create',
+            method: 'GET',
+            data : {
+                title : $("#input_title").val()
+                , content : $("#input_content").val()
+            },
+            dataType : "json",
+            contentType:"application/json",
+            success: function (data, status, xhr) {
+                alert("data :" + JSON.stringify(data));
+            },
+            error: function (data, status, err) {
+                alert("error :" + JSON.stringify(data));
+            },
+            complete: function () {
+            }
+        });
+    }
+</script>
+
+
+
+</body>
+</html>

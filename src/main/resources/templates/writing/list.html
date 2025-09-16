@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Writing List</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+
+List!!
+<div id="div_list">
+</div>
+
+<button onclick="list_writing()">목록 조회</button>
+<script>
+    function list_writing(){
+        //alert("등록이 시작됩니다!");
+
+        $.ajax({
+            url: '/api/writing/list',
+            method: 'GET',
+            data : {},
+            dataType : "json",
+            contentType:"application/json",
+            success: function (data, status, xhr) {
+                alert("data :" + JSON.stringify(data));
+
+                let list = data["data"];
+                //alert(JSON.stringify(list));
+                for(let each of list){
+                    let id = each["id"];
+                    //alert(id);
+                    let title = each["title"];
+                    let content = each["content"];
+
+                    $("#div_list").append(
+                      `<div onclick="location.href='/writing/detail/${id}'">${id} // ${title}</div>`
+                    );
+                }
+            },
+            error: function (data, status, err) {
+                alert("error :" + JSON.stringify(data));
+            },
+            complete: function () {
+            }
+        });
+    }
+</script>
+
+
+
+</body>
+</html>

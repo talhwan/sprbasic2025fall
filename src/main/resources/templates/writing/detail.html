@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Writing Detail</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+
+Detail!!
+<div>
+    id : <input type="text" id="input_id" /> <br/>
+    title : <input type="text" id="input_title" /> <br/>
+    content : <input type="text" id="input_content" /> <br/>
+</div>
+
+<!--<button onclick="detail_writing()">등록하기</button>-->
+<script>
+    let tempHref = location.href; //현재 내가 접속한 주소값!
+    //alert(tempHref); // http://localhost:8080/writing/detail/1
+
+    let tempOrder = tempHref.lastIndexOf("/");
+    let tempId = tempHref.substring(tempOrder + 1);
+    //alert(tempId);
+
+    let tempOrder2 = tempId.indexOf("?");
+    if(tempOrder2 > -1){
+        tempId = tempId.substring(0, tempOrder2);
+    }
+    //alert(tempId);
+    /*let tempArray = tempHref.split("/");
+    let tempId2 = tempArray[tempArray.length - 1];
+    alert(tempId);*/
+
+    $(function(){
+        // 실행할 기능을 정의해주세요.
+        detail_writing();
+    });
+
+    function detail_writing(){
+        //alert("등록이 시작됩니다!");
+
+        $.ajax({
+            url: '/api/writing/detail',
+            method: 'GET',
+            data : {
+                id : tempId
+            },
+            dataType : "json",
+            contentType:"application/json",
+            success: function (data, status, xhr) {
+                alert("data :" + JSON.stringify(data));
+                let writing = data["data"];
+                let id = writing["id"];
+                let title = writing["title"];
+                let content = writing["content"];
+                $("#input_id").val(id);
+                $("#input_title").val(title);
+                $("#input_content").val(content);
+            },
+            error: function (data, status, err) {
+                alert("error :" + JSON.stringify(data));
+            },
+            complete: function () {
+            }
+        });
+    }
+</script>
+
+
+
+</body>
+</html>
