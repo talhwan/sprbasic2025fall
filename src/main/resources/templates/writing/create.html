@@ -20,6 +20,7 @@ Create!!
         //alert("등록이 시작됩니다!");
 
         $.ajax({
+            //
             url: '/api/writing/create',
             method: 'GET',
             data : {
@@ -28,6 +29,7 @@ Create!!
             },
             dataType : "json",
             contentType:"application/json",
+            //
             success: function (data, status, xhr) {
                 alert("data :" + JSON.stringify(data));
             },
