@@ -21,15 +21,13 @@ Create!!
 
         $.ajax({
             //
-            url: '/api/writing/create',
-            method: 'GET',
-            data : {
+            url: '/api/writing',
+            method: 'POST',
+            data : JSON.stringify({
                 title : $("#input_title").val()
                 , content : $("#input_content").val()
-            },
-            dataType : "json",
+            }),
             contentType:"application/json",
-            //
             success: function (data, status, xhr) {
                 alert("data :" + JSON.stringify(data));
             },
