@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detail posting</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+
+id : <input type="text" id="input_id" />
+title : <input type="text" id="input_title" />
+content : <input type="text" id="input_content" />
+
+<button onclick="update_posting();">수정</button>
+<button onclick="delete_posting();">삭제</button>
+<script>
+    $(function(){
+        // 실행할 기능을 정의해주세요.
+        detail_posting();
+    });
+    let temp_id = location.href;
+    let array_href = temp_id.split("/");
+    if(array_href.length > 0){
+        temp_id = array_href[array_href.length - 1];
+    }
+    if(temp_id.includes("?")){
+        let array_id = temp_id.split("?");
+        temp_id = array_id[0];
+    }
+
+    function detail_posting(){
+        $.ajax({
+            //
+            url: '/api/posting',
+            method: 'GET',
+            data : {
+                id : temp_id
+            },
+            contentType:"application/json",
+            success: function (data, status, xhr) {
+                alert("data :" + JSON.stringify(data));
+                $("#input_id").val(data["id"]);
+                $("#input_title").val(data["title"]);
+                $("#input_content").val(data["content"]);
+            },
+            error: function (data, status, err) {
+                alert("error :" + JSON.stringify(data));
+            },
+            complete: function () {
+            }
+        });
+    }
+    function update_posting(){
+        $.ajax({
+            //
+            url: '/api/posting',
+            method: 'PUT',
+            data : JSON.stringify({
+                id : $("#input_id").val()
+                , title : $("#input_title").val()
+                , content : $("#input_content").val()
+            }),
+            contentType:"application/json",
+            success: function (data, status, xhr) {
+                //alert("data :" + JSON.stringify(data));
+            },
+            error: function (data, status, err) {
+                alert("error :" + JSON.stringify(data));
+            },
+            complete: function () {
+            }
+        });
+    }
+    function delete_posting(){
+        $.ajax({
+            //
+            url: '/api/posting',
+            method: 'DELETE',
+            data : $("#input_id").val(),
+            contentType:"application/json",
+            success: function (data, status, xhr) {
+                //alert("data :" + JSON.stringify(data));
+            },
+            error: function (data, status, err) {
+                alert("error :" + JSON.stringify(data));
+            },
+            complete: function () {
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

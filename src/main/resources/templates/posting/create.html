@@ -2,29 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>create posting</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 </head>
 <body>
-Board create
 
-<div>
-    title : <input type="text" id="input_title"/> <br/>
-    content : <input type="text" id="input_content"/> <br/>
-</div>
+title : <input type="text" id="input_title" />
+content : <input type="text" id="input_content" />
 
-<button onclick="create_board()">등록하기</button>
-
+<button onclick="create_posting();">등록</button>
 <script>
-    function create_board(){
+    function create_posting(){
         $.ajax({
-            url: '/api/board/create',
-            method: 'GET',
-            data : {
+            //
+            url: '/api/posting',
+            method: 'POST',
+            data : JSON.stringify({
                 title : $("#input_title").val()
                 , content : $("#input_content").val()
-            },
-            dataType : "json",
+            }),
             contentType:"application/json",
             success: function (data, status, xhr) {
                 alert("data :" + JSON.stringify(data));
@@ -37,5 +33,6 @@ Board create
         });
     }
 </script>
+
 </body>
 </html>
