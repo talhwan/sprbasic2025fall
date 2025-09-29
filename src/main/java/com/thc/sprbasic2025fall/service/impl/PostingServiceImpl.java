@@ -1,11 +1,13 @@
 package com.thc.sprbasic2025fall.service.impl;
 
 import com.thc.sprbasic2025fall.domain.Posting;
+import com.thc.sprbasic2025fall.dto.PostingDto;
 import com.thc.sprbasic2025fall.repository.PostingRepository;
 import com.thc.sprbasic2025fall.service.PostingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,39 +18,48 @@ public class PostingServiceImpl implements PostingService {
     final PostingRepository postingRepository;
 
     @Override
-    public Long create(Map<String, Object> param) {
-        Posting posting = new Posting();
-        posting.setTitle(param.get("title") + "");
-        posting.setContent(param.get("content") + "");
-
-        posting = postingRepository.save(posting);
-        return posting.getId();
+    public PostingDto.CreateResDto create(PostingDto.CreateReqDto param) {
+        return postingRepository.save(param.toEntity()).toCreateResDto();
     }
 
     @Override
-    public void update(Map<String, Object> param) {
-        Long id = Long.parseLong(param.get("id") + "");
-        Posting posting = postingRepository.findById(id).orElseThrow(() -> new RuntimeException("no data"));
-        String title = (String) param.get("title");
-        if(title != null){ posting.setTitle(title); }
-        String content = (String) param.get("content");
-        if(content != null){ posting.setContent(content); }
+    public void update(PostingDto.UpdateReqDto param) {
+        Posting posting = postingRepository.findById(param.getId()).orElseThrow(() -> new RuntimeException("no data"));
+        posting.update(param);
         postingRepository.save(posting);
     }
 
     @Override
-    public void delete(Long id) {
-        Posting posting = postingRepository.findById(id).orElseThrow(() -> new RuntimeException("no data"));
-        postingRepository.delete(posting);
+    public void delete(PostingDto.UpdateReqDto param) {
+        update(PostingDto.UpdateReqDto.builder().id(param.getId()).deleted(true).build());
+    }
+
+    public PostingDto.DetailResDto get(PostingDto.DetailReqDto param) {
+        Posting posting = postingRepository.findById(param.getId()).orElseThrow(() -> new RuntimeException("no data"));
+        return PostingDto.DetailResDto.builder()
+                .id(posting.getId())
+                .deleted(posting.getDeleted())
+                .title(posting.getTitle())
+                .content(posting.getContent())
+                .build();
     }
 
     @Override
-    public Posting detail(Long id) {
-        return postingRepository.findById(id).orElseThrow(() -> new RuntimeException("no data"));
+    public PostingDto.DetailResDto detail(PostingDto.DetailReqDto param) {
+        return get(param);
     }
 
     @Override
-    public List<Posting> list() {
-        return postingRepository.findAll();
+    public List<PostingDto.DetailResDto> list(PostingDto.ListReqDto param) {
+        List<PostingDto.DetailResDto> list = new ArrayList<>();
+        List<Posting> postings = postingRepository.findAll();
+        for (Posting posting : postings) {
+            if(param.getDeleted() != null){
+                if(posting.getDeleted() == param.getDeleted()){
+                    list.add(get(PostingDto.DetailReqDto.builder().id(posting.getId()).build()));
+                }
+            }
+        }
+        return list;
     }
 }

@@ -1,6 +1,7 @@
 package com.thc.sprbasic2025fall.service;
 
 import com.thc.sprbasic2025fall.domain.Posting;
+import com.thc.sprbasic2025fall.dto.PostingDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,9 +9,9 @@ import java.util.Map;
 
 @Service
 public interface PostingService {
-    Long create(Map<String, Object> param);
-    void update(Map<String, Object> param);
-    void delete(Long id);
-    Posting detail(Long id);
-    List<Posting> list();
+    PostingDto.CreateResDto create(PostingDto.CreateReqDto param);
+    void update(PostingDto.UpdateReqDto param);
+    void delete(PostingDto.UpdateReqDto param);
+    PostingDto.DetailResDto detail(PostingDto.DetailReqDto param);
+    List<PostingDto.DetailResDto> list(PostingDto.ListReqDto param);
 }

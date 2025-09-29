@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 </head>
 <body>
-
+deleted : <input type="checkbox" id="input_deleted" />
 id : <input type="text" id="input_id" />
 title : <input type="text" id="input_title" />
 content : <input type="text" id="input_content" />
@@ -39,6 +39,7 @@ content : <input type="text" id="input_content" />
             contentType:"application/json",
             success: function (data, status, xhr) {
                 alert("data :" + JSON.stringify(data));
+                $("#input_deleted").prop("checked", data["deleted"]);
                 $("#input_id").val(data["id"]);
                 $("#input_title").val(data["title"]);
                 $("#input_content").val(data["content"]);
@@ -76,7 +77,9 @@ content : <input type="text" id="input_content" />
             //
             url: '/api/posting',
             method: 'DELETE',
-            data : $("#input_id").val(),
+            data : JSON.stringify({
+                id : $("#input_id").val()
+            }),
             contentType:"application/json",
             success: function (data, status, xhr) {
                 //alert("data :" + JSON.stringify(data));

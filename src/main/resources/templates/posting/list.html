@@ -7,21 +7,26 @@
 </head>
 <body>
 list
+<input type="checkbox" id="input_deleted"/>
 <div id="div_list"></div>
+<button onclick="list_posting()">목록조회</button>
 
 <script>
     $(function(){
         // 실행할 기능을 정의해주세요.
-        list_posting();
+        //list_posting();
     });
     function list_posting(){
         $.ajax({
             //
             url: '/api/posting/list',
             method: 'GET',
-            data : {},
+            data : {
+                deleted : $("#input_deleted").prop("checked")
+            },
             contentType:"application/json",
             success: function (data, status, xhr) {
+                $("#div_list").html("");
                 //alert("data :" + JSON.stringify(data));
                 let tempList = data;
                 for(let each of tempList){
