@@ -1,6 +1,7 @@
 package com.thc.sprbasic2025fall.controller;
 
 import com.thc.sprbasic2025fall.domain.Posting;
+import com.thc.sprbasic2025fall.dto.DefaultDto;
 import com.thc.sprbasic2025fall.dto.PostingDto;
 import com.thc.sprbasic2025fall.service.PostingService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class PostingRestController {
     final PostingService postingService;
 
     @PostMapping("")
-    public PostingDto.CreateResDto create(@RequestBody PostingDto.CreateReqDto param) {
+    public DefaultDto.CreateResDto create(@RequestBody PostingDto.CreateReqDto param) {
         return postingService.create(param);
     }
     @PutMapping("")
@@ -30,7 +31,7 @@ public class PostingRestController {
     }
 
     @GetMapping("")
-    public PostingDto.DetailResDto detail(PostingDto.DetailReqDto param) {
+    public PostingDto.DetailResDto detail(DefaultDto.DetailReqDto param) {
         return postingService.detail(param);
     }
     @GetMapping("/list")

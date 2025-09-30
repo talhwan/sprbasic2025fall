@@ -2,6 +2,7 @@ package com.thc.sprbasic2025fall.dto;
 
 import com.thc.sprbasic2025fall.domain.Posting;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 public class PostingDto {
 
@@ -15,38 +16,19 @@ public class PostingDto {
             return Posting.of(getTitle(), getContent());
         }
     }
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class CreateResDto{
-        Long id;
-    }
 
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class UpdateReqDto{
-        Long id;
-        Boolean deleted;
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
+    public static class UpdateReqDto extends DefaultDto.UpdateReqDto{
         String title;
         String content;
     }
-
-
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class DetailReqDto{
-        Long id;
-    }
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class DetailResDto{
-        Long id;
-        Boolean deleted;
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
+    public static class DetailResDto extends DefaultDto.DetailResDto {
         String title;
         String content;
     }
-
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class ListReqDto{
-        Boolean deleted;
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
+    public static class ListReqDto extends DefaultDto.ListReqDto {
         String title;
     }
-
-
-
 }
