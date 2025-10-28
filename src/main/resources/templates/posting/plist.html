@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 </head>
 <body>
-list
+pagedList
 <!--<input type="checkbox" id="input_deleted"/>-->
 <br />
 삭제 : <select id="input_deleted">
@@ -15,6 +15,8 @@ list
     <option value="true">삭제</option>
 </select>
 제목 : <input id="input_title">
+호출할 페이지 : <input id="input_callpage">
+한 페이지 당 글 갯수 : <input id="input_perpage">
 
 <div id="div_list"></div>
 <button onclick="list_posting()">목록조회</button>
@@ -33,17 +35,20 @@ list
         }
         $.ajax({
             //
-            url: '/api/posting/list',
+            url: '/api/posting/pagedList',
             method: 'GET',
             data : {
                 deleted : deleted
                 , title : $("#input_title").val()
+
+                , callpage : $("#input_callpage").val()
+                , perpage : $("#input_perpage").val()
             },
             contentType:"application/json",
             success: function (data, status, xhr) {
                 $("#div_list").html("");
-                //alert("data :" + JSON.stringify(data));
-                let tempList = data;
+                alert("data :" + JSON.stringify(data));
+                let tempList = data["list"];
                 for(let each of tempList){
                     $("#div_list").append(
                       `<div onclick="location.href='/posting/detail/${each.id}';">${each.id} : ${each.title}</div>`

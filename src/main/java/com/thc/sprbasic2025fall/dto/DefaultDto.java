@@ -31,4 +31,19 @@ public class DefaultDto {
     public static class ListReqDto{
         Boolean deleted;
     }
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
+    public static class PagedListReqDto{
+        Integer callpage;
+        Integer perpage;
+        Integer offset; // 실제 호출할 순번
+
+        Boolean deleted;
+    }
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
+    public static class PagedListResDto{
+        Integer callpage;
+        Integer totalpage;
+        Integer listcount;
+        Object list;
+    }
 }

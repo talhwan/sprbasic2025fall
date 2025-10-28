@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thc.sprbasic2025fall.mapper.PostingMapper">
+
+	<!---->
+	<select id="detail" parameterType="hashMap" resultType="com.thc.sprbasic2025fall.dto.PostingDto$DetailResDto">
+		SELECT posting.id
+			 , posting.deleted
+			 , posting.created_at as createdAt
+			 , posting.modified_at as modifiedAt
+			 , posting.title
+			 , posting.content
+		FROM posting
+		WHERE posting.id = #{id}
+	</select>
+
+    <select id="list" parameterType="hashMap" resultType="com.thc.sprbasic2025fall.dto.PostingDto$DetailResDto">
+        SELECT posting.id
+        FROM posting
+        WHERE posting.id is not null
+        <if test = "deleted != null">AND posting.deleted = #{deleted}</if>
+        <if test = "title != null and title !=''">AND posting.title LIKE CONCAT('%', #{title}, '%')</if>
+    </select>
+    <select id="pagedList" parameterType="hashMap" resultType="com.thc.sprbasic2025fall.dto.PostingDto$DetailResDto">
+        SELECT posting.id
+        FROM posting
+        WHERE posting.id is not null
+        <if test = "deleted != null">AND posting.deleted = #{deleted}</if>
+        <if test = "title != null and title !=''">AND posting.title LIKE CONCAT('%', #{title}, '%')</if>
+        Limit #{offset}, #{perpage}
+    </select>
+    <select id="listCount" parameterType="hashMap" resultType="Integer">
+        SELECT count(posting.id)
+        FROM posting
+        WHERE posting.id is not null
+        <if test = "deleted != null">AND posting.deleted = #{deleted}</if>
+        <if test = "title != null and title !=''">AND posting.title LIKE CONCAT('%', #{title}, '%')</if>
+    </select>
+</mapper>
