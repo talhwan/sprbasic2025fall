@@ -35,4 +35,8 @@ public class PostingDto {
     public static class PagedListReqDto extends DefaultDto.PagedListReqDto {
         String title;
     }
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
+    public static class ScrollListReqDto extends DefaultDto.ScrollListReqDto {
+        String title;
+    }
 }
