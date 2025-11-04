@@ -42,7 +42,6 @@
         <if test = "title != null and title !=''">AND posting.title LIKE CONCAT('%', #{title}, '%')</if>
     </select>
 
-
     <select id="scrollList" parameterType="hashMap" resultType="com.thc.sprbasic2025fall.dto.PostingDto$DetailResDto">
         SELECT posting.id
         FROM posting

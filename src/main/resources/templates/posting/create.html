@@ -9,9 +9,52 @@
 
 title : <input type="text" id="input_title" />
 content : <input type="text" id="input_content" />
+image : <input type="file" id="input_file" />
+
+filename : <input type="text" id="input_filename" />
+<img id="img_img" />
+
+<a href="/download/1762254786221_문서2.docx">file 예전거 다운</a>
+
+
+<button onclick="upload_file(); return false;">파일 업로드!</button>
+<button onclick="download_file();">파일 다운로드!</button>
 
 <button onclick="create_posting();">등록</button>
 <script>
+    function download_file(){
+        location.href = "/download/" + $("#input_filename").val();
+    }
+    function upload_file(){
+
+        let tempFile = null;
+        let inputFile = document.getElementById('input_file');
+        if (inputFile.files.length > 0) {
+            tempFile = inputFile.files[0];
+        }
+
+        // FormData 준비
+        let formData = new FormData();
+        formData.append('file', tempFile);
+
+        $.ajax({
+            url: "/api/default/uploadFile",
+            type: "POST",
+            data: formData,
+            cache : false,
+            contentType : false,
+            processData : false,
+            success: (data, status, xhr)=>{
+                //alert(JSON.stringify(data));
+                $("#input_filename").val(data);
+                $("#img_img").attr("src", "/image/" + data);
+            },
+            error: (data)=>{
+                alert("error")
+            },
+        });
+
+    }
     function create_posting(){
         $.ajax({
             //
