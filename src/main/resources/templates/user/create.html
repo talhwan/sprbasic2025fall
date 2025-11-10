@@ -7,27 +7,33 @@
 </head>
 <body>
 
-username : <input class="input_param" type="text" id="input_username" name="username" /> <br/>
-password : <input class="input_param" type="password" id="input_password" name="password" /> <br/>
-name : <input class="input_param" type="text" id="input_name" name="name" /> <br/>
-phone : <input class="input_param" type="text" id="input_phone" name="phone" /> <br/>
-gender : <input class="input_param" type="text" id="input_gender" name="gender" /> <br/>
+*username : <input type="text" class="input_param" name="username" />
+*password : <input type="password" class="input_param" name="password" />
+name : <input type="text" class="input_param" name="name" />
+*nick : <input type="text" class="input_param" name="nick" />
+phone : <input type="text" class="input_param" name="phone" />
+birth : <input type="date" class="input_param" name="birth" />
+gender :
+<select class="input_param" name="gender">
+    <option value="M">남</option>
+    <option value="F">여</option>
+</select>
 
 <button onclick="create_user();">회원가입</button>
 <script>
     function create_user(){
 
-        let obj_param = {};
+        let _data = {};
         let input_param = $(".input_param");
         for(let each of input_param){
-            obj_param[$(each).attr("name")] = $(each).val();
+            _data[$(each).attr("name")] = $(each).val();
         }
 
         $.ajax({
             //
             url: '/api/user',
             method: 'POST',
-            data : JSON.stringify(obj_param),
+            data : JSON.stringify(_data),
             contentType:"application/json",
             success: function (data, status, xhr) {
                 alert("data :" + JSON.stringify(data));

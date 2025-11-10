@@ -3,6 +3,7 @@ package com.thc.sprbasic2025fall.service.impl;
 import com.thc.sprbasic2025fall.domain.User;
 import com.thc.sprbasic2025fall.dto.DefaultDto;
 import com.thc.sprbasic2025fall.dto.UserDto;
+import com.thc.sprbasic2025fall.mapper.UserMapper;
 import com.thc.sprbasic2025fall.repository.UserRepository;
 import com.thc.sprbasic2025fall.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,53 +11,38 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
     final UserRepository userRepository;
+    final UserMapper userMapper;
+
 
     @Override
     public DefaultDto.CreateResDto login(UserDto.LoginReqDto param) {
-        /*
-        //1. 아이디가 존재하는지 확인?
-        User user = userRepository.findByUsername(param.getUsername());
-        if(user == null){
-            //아이디 없어!!
-            return DefaultDto.CreateResDto.builder().id((long) -200).build();
-        } else {
-            //2. 아이디가 존재하면 비밀번호 일치하는지도 확인?
-            if(user.getPassword().equals(param.getPassword())){
-                // 로그인 완료!
-                return DefaultDto.CreateResDto.builder().id(user.getId()).build();
-            } else {
-                //비번 불일치!!
-                return DefaultDto.CreateResDto.builder().id((long) -200).build();
-            }
-        }
-
-        User user = userRepository.findByUsername(param.getUsername());
-        //2. 아이디가 존재하면 비밀번호 일치하는지도 확인?
-        if(user != null && user.getPassword().equals(param.getPassword())){
-            // 로그인 완료!
-            return DefaultDto.CreateResDto.builder().id(user.getId()).build();
-        }
-        return DefaultDto.CreateResDto.builder().id((long) -200).build();
-        */
         User user = userRepository.findByUsernameAndPassword(param.getUsername(), param.getPassword());
         if(user == null){
-            throw new RuntimeException("no matched data");
+            throw new RuntimeException("no data");
         }
-        // 로그인 완료!
         return DefaultDto.CreateResDto.builder().id(user.getId()).build();
-
     }
 
     /**/
 
     @Override
     public DefaultDto.CreateResDto create(UserDto.CreateReqDto param) {
+        User user = userRepository.findByUsername(param.getUsername());
+        if(user != null){
+            throw new RuntimeException("already exist");
+        }
+        user = userRepository.findByNick(param.getNick());
+        if(user != null){
+            throw new RuntimeException("already exist");
+        }
+
         return userRepository.save(param.toEntity()).toCreateResDto();
     }
 
@@ -73,15 +59,15 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDto.DetailResDto get(DefaultDto.DetailReqDto param) {
-        User user = userRepository.findById(param.getId()).orElseThrow(() -> new RuntimeException("no data"));
-        return UserDto.DetailResDto.builder()
-                .id(user.getId())
-                .deleted(user.getDeleted())
-                .username(user.getUsername())
-                .name(user.getName())
-                .phone(user.getPhone())
-                .gender(user.getGender())
-                .build();
+//        User user = userRepository.findById(param.getId()).orElseThrow(() -> new RuntimeException("no data"));
+//        return UserDto.DetailResDto.builder()
+//                .id(user.getId())
+//                .deleted(user.getDeleted())
+//                .title(user.getTitle())
+//                .content(user.getContent())
+//                .build();
+        UserDto.DetailResDto res = userMapper.detail(param.getId());
+        return res;
     }
 
     @Override
@@ -89,17 +75,29 @@ public class UserServiceImpl implements UserService {
         return get(param);
     }
 
+    public List<UserDto.DetailResDto> addlist(List<UserDto.DetailResDto> list) {
+        List<UserDto.DetailResDto> newList = new ArrayList<>();
+        for (UserDto.DetailResDto user : list) {
+            newList.add(get(DefaultDto.DetailReqDto.builder().id(user.getId()).build()));
+        }
+        return newList;
+    }
+
     @Override
     public List<UserDto.DetailResDto> list(UserDto.ListReqDto param) {
         List<UserDto.DetailResDto> list = new ArrayList<>();
-        List<User> users = userRepository.findAll();
-        for (User user : users) {
-            if(param.getDeleted() != null){
-                if(user.getDeleted() == param.getDeleted()){
-                    list.add(get(DefaultDto.DetailReqDto.builder().id(user.getId()).build()));
-                }
-            }
-        }
-        return list;
+        List<UserDto.DetailResDto> users = userMapper.list(param);
+        return addlist(users);
+    }
+    @Override
+    public DefaultDto.PagedListResDto pagedList(UserDto.PagedListReqDto param) {
+        DefaultDto.PagedListResDto res = param.init(userMapper.listCount(param));
+        res.setList(addlist(userMapper.pagedList(param)));
+        return res;
+    }
+
+    @Override
+    public List<UserDto.DetailResDto> scrollList(UserDto.ScrollListReqDto param) {
+        return addlist(userMapper.scrollList(param));
     }
 }

@@ -16,7 +16,6 @@ public class UserRestController {
 
     final UserService userService;
 
-
     @PostMapping("/login")
     public ResponseEntity<DefaultDto.CreateResDto> login(@RequestBody UserDto.LoginReqDto param) {
         return ResponseEntity.ok(userService.login(param));
@@ -45,6 +44,14 @@ public class UserRestController {
     @GetMapping("/list")
     public ResponseEntity<List<UserDto.DetailResDto>> list(UserDto.ListReqDto param) {
         return ResponseEntity.ok(userService.list(param));
+    }
+    @GetMapping("/pagedList")
+    public ResponseEntity<DefaultDto.PagedListResDto> pagedList(UserDto.PagedListReqDto param) {
+        return ResponseEntity.ok(userService.pagedList(param));
+    }
+    @GetMapping("/scrollList")
+    public ResponseEntity<List<UserDto.DetailResDto>> scrollList(UserDto.ScrollListReqDto param) {
+        return ResponseEntity.ok(userService.scrollList(param));
     }
 
 }

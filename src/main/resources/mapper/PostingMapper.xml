@@ -14,19 +14,22 @@
 		WHERE posting.id = #{id}
 	</select>
 
-    <select id="list" parameterType="hashMap" resultType="com.thc.sprbasic2025fall.dto.PostingDto$DetailResDto">
-        SELECT posting.id
-        FROM posting
+    <!-- 공통 WHERE 절 -->
+    <sql id="commonWhere">
         WHERE posting.id is not null
         <if test = "deleted != null">AND posting.deleted = #{deleted}</if>
         <if test = "title != null and title !=''">AND posting.title LIKE CONCAT('%', #{title}, '%')</if>
+    </sql>
+
+    <select id="list" parameterType="hashMap" resultType="com.thc.sprbasic2025fall.dto.PostingDto$DetailResDto">
+        SELECT posting.id
+        FROM posting
+        <include refid="commonWhere"/>
     </select>
     <select id="pagedList" parameterType="hashMap" resultType="com.thc.sprbasic2025fall.dto.PostingDto$DetailResDto">
         SELECT posting.id
         FROM posting
-        WHERE posting.id is not null
-        <if test = "deleted != null">AND posting.deleted = #{deleted}</if>
-        <if test = "title != null and title !=''">AND posting.title LIKE CONCAT('%', #{title}, '%')</if>
+        <include refid="commonWhere"/>
         ORDER BY
             <if test = "orderby =='id'">posting.id </if>
             <if test = "orderby =='title'">posting.title </if>
@@ -37,17 +40,13 @@
     <select id="listCount" parameterType="hashMap" resultType="Integer">
         SELECT count(posting.id)
         FROM posting
-        WHERE posting.id is not null
-        <if test = "deleted != null">AND posting.deleted = #{deleted}</if>
-        <if test = "title != null and title !=''">AND posting.title LIKE CONCAT('%', #{title}, '%')</if>
+        <include refid="commonWhere"/>
     </select>
 
     <select id="scrollList" parameterType="hashMap" resultType="com.thc.sprbasic2025fall.dto.PostingDto$DetailResDto">
         SELECT posting.id
         FROM posting
-        WHERE posting.id is not null
-        <if test = "deleted != null">AND posting.deleted = #{deleted}</if>
-        <if test = "title != null and title !=''">AND posting.title LIKE CONCAT('%', #{title}, '%')</if>
+        <include refid="commonWhere"/>
         <if test = "cursor != null">
             <if test = "orderway != null and orderway =='desc'">AND #{cursor} > posting.id</if>
             <if test = "orderway != null and orderway =='asc'">AND posting.id > #{cursor}</if>
