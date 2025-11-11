@@ -3,21 +3,31 @@
 <mapper namespace="com.thc.sprbasic2025fall.mapper.PostingMapper">
 
 	<!---->
+
+
 	<select id="detail" parameterType="hashMap" resultType="com.thc.sprbasic2025fall.dto.PostingDto$DetailResDto">
-		SELECT posting.id
-			 , posting.deleted
-			 , posting.created_at as createdAt
-			 , posting.modified_at as modifiedAt
-			 , posting.title
-			 , posting.content
-		FROM posting
-		WHERE posting.id = #{id}
+        SELECT posting.id
+             , posting.deleted
+             , posting.created_at as createdAt
+             , posting.modified_at as modifiedAt
+             , posting.user_id as userId
+             , posting.title
+             , posting.content
+             , posting.img
+
+             , user.username as userUsername
+             , user.name as userName
+             , user.nick as userNick
+        FROM posting left join user
+                               ON posting.user_id = user.id
+        WHERE posting.id = ${id}
 	</select>
 
     <!-- 공통 WHERE 절 -->
     <sql id="commonWhere">
         WHERE posting.id is not null
         <if test = "deleted != null">AND posting.deleted = #{deleted}</if>
+        <if test = "userId != null">AND posting.user_id = #{userId}</if>
         <if test = "title != null and title !=''">AND posting.title LIKE CONCAT('%', #{title}, '%')</if>
     </sql>
 

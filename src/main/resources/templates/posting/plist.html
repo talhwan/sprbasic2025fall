@@ -73,7 +73,7 @@ pagedList
                 for(let each of tempList){
                     tempOrder++;
                     $("#div_list").append(
-                      `<div onclick="location.href='/posting/detail/${each.id}';">${tempOrder} // ${each.title}</div>`
+                      `<div onclick="location.href='/posting/detail/${each.id}';">${tempOrder} <img src="${each.img}" style="height:50px;"/>// ${each.title}</div>`
                     );
                 }
                 let totalpage = Number(data["totalpage"]);
