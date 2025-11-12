@@ -1,60 +1,49 @@
 package com.thc.sprbasic2025fall.dto;
 
-import com.thc.sprbasic2025fall.domain.Posting;
+import com.thc.sprbasic2025fall.domain.Postcmt;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+public class PostcmtDto {
 
-public class PostingDto {
-
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class CreateReqDto{
+        Long postingId;
         Long userId;
-        String title;
         String content;
-        String img;
 
-        List<String> imgs;
-
-        public Posting toEntity(){
-            return Posting.of(getUserId(), getTitle(), getContent(), getImg());
+        public Postcmt toEntity(){
+            return Postcmt.of(getPostingId(), getUserId(), getContent());
         }
     }
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class UpdateReqDto extends DefaultDto.UpdateReqDto{
-        String title;
         String content;
-        String img;
     }
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class DetailResDto extends DefaultDto.DetailResDto {
+        Long postingId;
         Long userId;
-        String title;
         String content;
-        String img;
-        Integer countlike;
 
         String userUsername;
         String userName;
         String userNick;
-
-        List<PostimgDto.DetailResDto> imgs;
     }
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class ListReqDto extends DefaultDto.ListReqDto {
+        Long postingId;
         Long userId;
-        String title;
     }
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class PagedListReqDto extends DefaultDto.PagedListReqDto {
+        Long postingId;
         Long userId;
-        String title;
     }
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class ScrollListReqDto extends DefaultDto.ScrollListReqDto {
+        Long postingId;
         Long userId;
-        String title;
     }
 }

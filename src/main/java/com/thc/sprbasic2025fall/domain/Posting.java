@@ -14,17 +14,19 @@ public class Posting extends AuditingFileds{
     @Setter String title;
     @Setter String content;
     @Setter String img;
+    @Setter Integer countlike;
 
     protected Posting(){}
-    private Posting(Long userId, String title, String content, String img){
+    private Posting(Long userId, String title, String content, String img, Integer countlike) {
         this.userId = userId;
         this.title = title;
         this.content = content;
         this.img = img;
+        this.countlike = countlike;
     }
     //이 메서드를 통해서만, 엔티티 인스턴스를 만들수 있도록 강제!!
     public static Posting of(Long userId, String title, String content, String img){
-        return new Posting(userId, title, content, img);
+        return new Posting(userId, title, content, img, 0);
     }
     public DefaultDto.CreateResDto toCreateResDto(){
         return DefaultDto.CreateResDto.builder().id(getId()).build();

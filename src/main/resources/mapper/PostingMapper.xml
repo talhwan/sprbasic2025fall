@@ -14,12 +14,13 @@
              , posting.title
              , posting.content
              , posting.img
+             , posting.countlike
 
              , user.username as userUsername
              , user.name as userName
              , user.nick as userNick
-        FROM posting left join user
-                               ON posting.user_id = user.id
+        FROM posting LEFT JOIN user
+          ON posting.user_id = user.id
         WHERE posting.id = ${id}
 	</select>
 

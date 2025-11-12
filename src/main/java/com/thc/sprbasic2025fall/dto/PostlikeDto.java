@@ -1,60 +1,65 @@
 package com.thc.sprbasic2025fall.dto;
 
-import com.thc.sprbasic2025fall.domain.Posting;
+import com.thc.sprbasic2025fall.domain.Postlike;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+public class PostlikeDto {
 
-public class PostingDto {
 
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-    public static class CreateReqDto{
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+    public static class LikedReqDto{
+        Long postingId;
         Long userId;
-        String title;
-        String content;
-        String img;
+    }
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+    public static class LikedResDto{
+        Boolean liked;
+    }
 
-        List<String> imgs;
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+    public static class ToggleResDto{
+        Boolean liked;
+        Integer countlike;
+    }
+    /**/
 
-        public Posting toEntity(){
-            return Posting.of(getUserId(), getTitle(), getContent(), getImg());
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+    public static class CreateReqDto{
+        Long postingId;
+        Long userId;
+
+        public Postlike toEntity(){
+            return Postlike.of(getPostingId(), getUserId());
         }
     }
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class UpdateReqDto extends DefaultDto.UpdateReqDto{
-        String title;
         String content;
-        String img;
     }
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class DetailResDto extends DefaultDto.DetailResDto {
+        Long postingId;
         Long userId;
-        String title;
-        String content;
-        String img;
-        Integer countlike;
 
         String userUsername;
         String userName;
         String userNick;
-
-        List<PostimgDto.DetailResDto> imgs;
     }
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class ListReqDto extends DefaultDto.ListReqDto {
+        Long postingId;
         Long userId;
-        String title;
     }
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class PagedListReqDto extends DefaultDto.PagedListReqDto {
+        Long postingId;
         Long userId;
-        String title;
     }
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
     public static class ScrollListReqDto extends DefaultDto.ScrollListReqDto {
+        Long postingId;
         Long userId;
-        String title;
     }
 }
